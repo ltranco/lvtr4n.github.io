@@ -55,22 +55,23 @@ $(document).ready(function() { 
     }
 
     $(".freelance-proj-email-button").click(function() {
-        console.log("test");
         input_email = $(".freelance-proj-email-field").val();
         if(input_email) {
-            email = "email=" + input_email;
+            email = {"email":input_email};
             $(".freelance-proj-email-button").val("Sent!");
             $(".freelance-proj-email-field").val("");
             $.ajax({
-                url:"http://ltran.co/js/email.php",
+                url:"https://skurt-esender.herokuapp.com/send/",
                 type: "POST",
+                dataType: "json",
+                contentType: "application/json",
                 data: email,
                 success: function(data) {
                     $(".freelance-proj-email-button").val("Get Sample");
                 },
                 error: function(data) {
                     $(".freelance-proj-email-button").val("Get Sample");
-            }
+                }
             });
         }
     });
