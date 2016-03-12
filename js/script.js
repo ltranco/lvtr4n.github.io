@@ -60,9 +60,11 @@ $(document).ready(function() { 
             email = {"email":input_email};
             $(".freelance-proj-email-button").val("Sent!");
             $(".freelance-proj-email-field").val("");
+            console.log("hi3");
             $.ajax({
                 url:"https://skurt-esender.herokuapp.com/send/",
                 type: "POST",
+                headers: {"Access-Control-Allow-Origin" : "*"},
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
