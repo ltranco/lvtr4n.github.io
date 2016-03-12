@@ -64,7 +64,8 @@ $(document).ready(function() { 
                 url:"https://skurt-esender.herokuapp.com/send/",
                 type: "POST",
                 dataType: "json",
-                contentType: "application/json",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
                 data: email,
                 success: function(data) {
                     $(".freelance-proj-email-button").val("Get Sample");
