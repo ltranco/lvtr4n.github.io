@@ -18,8 +18,6 @@ function emailSampleHandler() {
         $.ajax({
             url:"https://skurt-esender.herokuapp.com/send/",
             type: "GET",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
             crossDomain: true,
             data: email,
             success: function(data) {
