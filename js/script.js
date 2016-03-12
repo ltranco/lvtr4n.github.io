@@ -85,7 +85,6 @@ $(document).ready(function() { 
             emailSampleHandler();
         }
     });
-})
 
     setInterval(changeQuote, 10000);
-}); 
+});
