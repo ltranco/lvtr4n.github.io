@@ -9,6 +9,29 @@ function changeQuote() {
     $("#quotes").html(quotes[index++]);
 }
 
+function emailSampleHandler() {
+    input_email = $(".freelance-proj-email-field").val();
+    if(input_email) {
+        email = {"email":input_email};
+        $(".freelance-proj-email-button").val("Sent!");
+        $(".freelance-proj-email-field").val("");
+        $.ajax({
+            url:"https://skurt-esender.herokuapp.com/send/",
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            data: email,
+            success: function(data) {
+                $(".freelance-proj-email-button").val("Get Sample");
+            },
+            error: function(data) {
+                $(".freelance-proj-email-button").val("Get Sample");
+            }
+        });
+    }
+}
+
 $(document).ready(function() { 
     var owl = $("#reading-list");
     owl.owlCarousel({
@@ -55,27 +78,14 @@ $(document).ready(function() { 
     }
 
     $(".freelance-proj-email-button").click(function() {
-        input_email = $(".freelance-proj-email-field").val();
-        if(input_email) {
-            email = {"email":input_email};
-            $(".freelance-proj-email-button").val("Sent!");
-            $(".freelance-proj-email-field").val("");
-            $.ajax({
-                url:"https://skurt-esender.herokuapp.com/send/",
-                type: "GET",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                data: email,
-                success: function(data) {
-                    $(".freelance-proj-email-button").val("Get Sample");
-                },
-                error: function(data) {
-                    $(".freelance-proj-email-button").val("Get Sample");
-                }
-            });
+        emailSampleHandler();
+    });
+    $(".freelance-proj-email-field").keydown(function(e) {
+        if(e.keyCode == 13){
+            emailSampleHandler();
         }
     });
+})
 
     setInterval(changeQuote, 10000);
 }); 
