@@ -35,7 +35,9 @@ $(document).ready(function() { 
     owl.owlCarousel({
       navigation : true,
       pagination: true,
-      singleItem:true
+      singleItem:true,
+      lazyLoad: true,
+      lazyFollow: true,
     });
 
     var dur = 300;
