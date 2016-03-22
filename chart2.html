@@ -14,7 +14,6 @@
     }
     #tooltip {
         position: absolute;
-        width: 200px;
         height: auto;
         padding: 10px;
         background-color: white;
@@ -65,7 +64,7 @@
           .enter()
           .append("path")
           .attr("class", colorCounter == 0 ? "": "ring")
-          .attr("fill", function(d, i) { return colorCounter == 0 ? "#d3d3d3" :colors[i + colorCounter]; })
+          .attr("fill", function(d, i) { return colorCounter == 0 ? "#263646" :colors[i + colorCounter]; })
           .attr("d", arc)
           .on("mouseover", function(d) {
             var ringUnderMouse = this;
@@ -77,14 +76,17 @@
               .text(d.value);
             d3.selectAll("path.ring")
               .style("opacity", function() { 
-                return (this == ringUnderMouse) ? 1.0 : 0.5;
-              });
+                return (this == ringUnderMouse) ? 1.0 : 0;
+              })
+              .style("cursor", "pointer");
+              
           })
           .on("mouseout", function() {
             d3.select("#tooltip")
               .style("opacity", 0);
             d3.selectAll("path")
-              .style("opacity", 1);
+              .style("opacity", 1)
+              .style("cursor", "default");
           });
       };
 
