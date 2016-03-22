@@ -39,9 +39,11 @@
       var width = 500,
           height = 500,
           radius = Math.min(width, height) / 2,
-          //F7C116
 
-          colors = ["black", "#8F69F1", "transparent", "#F7C116", "transparent", "#4BBAC3", "transparent", "#F56E69", "transparent"],
+          colors = ["black", "url(#gradient1)", "transparent", 
+                    "url(#gradient2)", "transparent", 
+                    "url(#gradient3)", "transparent", 
+                    "url(#gradient4)", "transparent"],
           pie = d3.layout.pie().sort(null),
           arc = d3.svg.arc().innerRadius(radius - 125).outerRadius(radius - 25),
           arc2 = d3.svg.arc().innerRadius(radius - 125).outerRadius(radius - 80),
@@ -59,6 +61,26 @@
       var svg = d3.select("body").select("svg");
       var g = svg.select("g");
 
+      //Add gradient layer
+      function addGradient(name, startColor, stopColor) {
+        var gradient = svg.append("defs")
+                        .append("linearGradient")
+                        .attr("id", name)
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "100%")
+                        .attr("y2", "100%")
+                        .attr("spreadMethod", "pad");
+        gradient.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", startColor)
+          .attr("stop-opacity", 1);
+        gradient.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", stopColor)
+          .attr("stop-opacity", 1);
+      }
+
       //Add ring to svg
       function addArc(data, colorCounter, arc) {
         svg.append("g")
@@ -67,9 +89,11 @@
           .enter()
           .append("path")
           .attr("class", colorCounter == 0 ? "": "ring")
-          .attr("fill", function(d, i) { return colorCounter == 0 ? "#263646" :colors[i + colorCounter]; })
+          .attr("fill", function(d, i) { 
+            return colorCounter == 0 ? "#263646" :colors[i + colorCounter]; })
           .attr("d", arc)
-          .on("mouseover", function(d) {
+          .style("filter", "url(#drop-shadow)")
+          .on("mouseenter", function(d) {
             var ringUnderMouse = this;
             if(colorCounter != 0 && 
               d3.select(this).attr("fill") != "transparent") {
@@ -86,7 +110,7 @@
                 .style("cursor", "pointer");  
             }  
           })
-          .on("mouseout", function() {
+          .on("mouseleave", function() {
             d3.select("#tooltip")
               .style("opacity", 0);
             d3.selectAll("path")
@@ -95,16 +119,49 @@
           });
       };
 
+      //Create shadow
+      var defs = svg.append("defs");
+      var filter = defs.append("filter")
+          .attr("id", "drop-shadow")
+          .attr("height", "130%");
+
+      filter.append("feGaussianBlur")
+          .attr("in", "SourceAlpha")
+          .attr("stdDeviation", 5)
+          .attr("result", "blur");
+      filter.append("feOffset")
+          .attr("in", "blur")
+          .attr("dx", 5)
+          .attr("dy", 5)
+          .attr("result", "offsetBlur");
+      var feMerge = filter.append("feMerge");
+      feMerge.append("feMergeNode")
+          .attr("in", "offsetBlur")
+      feMerge.append("feMergeNode")
+          .attr("in", "SourceGraphic");
+
+      addGradient("gradient1", "#8F69F1", "#000");
+      addGradient("gradient2", "#F7C116", "#000");
+      addGradient("gradient3", "#4BBAC3", "#000");
+      addGradient("gradient4", "#F56E69", "#000");
       addArc([30000, 30000], 0, arc);
       addArc([30000, 8000],  7, arc2);
       addArc([52000, 20000], 5, arc3);
       addArc([40000, 22000], 3, arc4);
       addArc([30000, 30000], 1, arc5);
       
-      g.append("text")
+      /*g.append("text")
         .attr("text-anchor", "middle")
         .attr("class", "middle-text")
-        .text("95%");;
+        .text("95%");*/
+
+      g.append("image")
+        .attr("xlink:href", "http://www.nuorisokirjailijat.fi/uploads/4/5/1/9/45198743/238000966.png")
+        .attr("width", "170px")
+        .attr("height", "170px")
+        .attr("x", -85)
+        .attr("y", -85)
+        .style("filter", "url(#drop-shadow)");
 
         
     </script>
