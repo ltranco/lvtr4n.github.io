@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+  <meta charset="utf-8">
+  <style>
+    .arc text {
+      font: 10px sans-serif;
+      text-anchor: middle;
+    }
+    .arc path {
+      stroke: #fff;
+    }
+    .middle-text {
+      font-size: 70px;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    #tooltip {
+        position: absolute;
+        width: 200px;
+        height: auto;
+        padding: 10px;
+        background-color: white;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        -mox-box-shadow: 4px 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 10px rbga(0, 0, 0, 0.4) pointer-events: none;
+    }
+    #tooltip.hidden {
+        opacity: 0;
+    }
+  </style>
+  <body>
+    <div id="tooltip" class="hidden">
+      <span id="tooltip_val"></span>
+    </div>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+      //Globals
+      var width = 500,
+          height = 500,
+          radius = Math.min(width, height) / 2,
+          colors = ["black", "#263646", "transparent", "#4DBE80", "transparent", "#8F69F1", "transparent", "#4BBAC3", "transparent"],
+          pie = d3.layout.pie().sort(null),
+          arc = d3.svg.arc().innerRadius(radius - 125).outerRadius(radius - 25),
+          arc2 = d3.svg.arc().innerRadius(radius - 125).outerRadius(radius - 80),
+          arc3 = d3.svg.arc().innerRadius(radius - 105).outerRadius(radius - 60),
+          arc4 = d3.svg.arc().innerRadius(radius - 85).outerRadius(radius - 40),
+          arc5 = d3.svg.arc().innerRadius(radius - 65).outerRadius(radius - 20);
+
+      //Create svg and g
+      d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+      var svg = d3.select("body").select("svg");
+      var g = svg.select("g");
+
+      //Add ring to svg
+      function addArc(data, colorCounter, arc) {
+        svg.append("g")
+          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+          .selectAll("path").data(pie(data))
+          .enter()
+          .append("path")
+          .attr("class", colorCounter == 0 ? "": "ring")
+          .attr("fill", function(d, i) { return colorCounter == 0 ? "#d3d3d3" :colors[i + colorCounter]; })
+          .attr("d", arc)
+          .on("mouseover", function(d) {
+            var ringUnderMouse = this;
+            d3.select("#tooltip")
+              .style("left", d3.event.pageX + "px")
+              .style("top", d3.event.pageY + "px")
+              .style("opacity", 1)
+              .select("#tooltip_val")
+              .text(d.value);
+            d3.selectAll("path.ring")
+              .style("opacity", function() { 
+                return (this == ringUnderMouse) ? 1.0 : 0.5;
+              });
+          })
+          .on("mouseout", function() {
+            d3.select("#tooltip")
+              .style("opacity", 0);
+            d3.selectAll("path")
+              .style("opacity", 1);
+          });
+      };
+
+      addArc([30000, 30000], 0, arc);
+      addArc([30000, 8000],  7, arc2);
+      addArc([52000, 20000], 5, arc3);
+      addArc([40000, 22000], 3, arc4);
+      addArc([30000, 30000], 1, arc5);
+      
+      g.append("text")
+        .attr("text-anchor", "middle")
+        .attr("class", "middle-text")
+        .text("95%");;
+
+        
+    </script>
+</body>
