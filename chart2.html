@@ -16,7 +16,6 @@
     #centerTitle {
       font-size: 25px;
       text-anchor: middle;
-
     }
     #centerSubtitle {
       font-size: 90px;
@@ -54,6 +53,7 @@
       width: 350px;
       font-size: 30px;
       font-family: "Lato";
+      color: #314965;
     }
     .menu img {
       width: 364px;
@@ -180,7 +180,8 @@
         .on("mouseenter", function(d) {
           var centerData = 0;
           d3.select(this)
-            .style("background-color", borders[d]);
+            .style("background-color", borders[d])
+            .style("color", "white");
           d3.selectAll(".ring")
             .style("opacity", function() { 
                 return (d3.select(this).attr("fill") != "transparent" && 
@@ -200,11 +201,12 @@
           });    
           d3.select("#centerData")
             .style("opacity", 1)
-            .text(centerData);
+            .text(centerData);            
         })
         .on("mouseleave", function() {
           d3.select(this)
-            .style("background-color", "transparent");
+            .style("background-color", "transparent")
+            .style("color", "#314965");
           d3.selectAll(".ring")
             .style("opacity", 1.0);
           d3.select("#centerTitle")
