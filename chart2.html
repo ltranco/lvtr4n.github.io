@@ -112,7 +112,7 @@
       }
 
       //Add ring to svg
-      function addArc(data, colorCounter, arc) {
+      function addArc(data, colorCounter, arc, innerRad, outerRad) {
         var sum = 0;
         for(var i = 0; i < data.length; i++) {
           sum += data[i];
@@ -130,27 +130,38 @@
           .attr("ringData", data[0])
           .attr("fill", function(d, i) { 
             return colorCounter == 0 ? "#314965" :colors[i + colorCounter]; })
-          .attr("d", arc.endAngle(colorCounter == 0 ? 2 * Math.PI : 0.0))
+          .attr("d", arc.endAngle(colorCounter == 0 ? 2 * Math.PI : 0.5))
+          //.attr("d", arc)
           .style("filter", "url(#drop-shadow)");
         path = d3.select(path[0][0]);
 
         if(path && colorCounter != 0) {
           path.transition()
-              .duration(1000)
-              .call(arcTween, endAngle);
+          .duration(2000)
+          .call(arcTween, endAngle, innerRad, outerRad);
         }
       };
 
       //Animation tween function
-      function arcTween(transition, newAngle) {
+      function arcTween(transition, newAngle, innerRad, outerRad) {
         transition.attrTween("d", function(d) {
           var interpolate = d3.interpolate(d.endAngle, newAngle);
           return function(t) {
-            d.endAngle = interpolate(t);
-            return arc(d);
+            return drawArc(interpolate(t), innerRad, outerRad);
           };
         });
       }
+      var drawArc = d3.svg.arc()
+                      .innerRadius(function(d, i, o) {
+                        return i;
+                      })
+                      .outerRadius(function(d, i, o) {
+                        return o;
+                      })
+                      .startAngle(0)
+                      .endAngle(function(d, i, o) {
+                        return d;
+                      });
 
       //Add listener to menu list
       d3.selectAll(".menu li")
@@ -219,30 +230,12 @@
       addGradient("gradient3", "#4BBAC3", "#00CDAC");
       addGradient("gradient4", "#F56E69", "#fe8c00");
       
-      addArc([0, 30000], 0, arc6);
+      addArc([0, 30000], 0, arc6, 0, 0);
       //addArc([30000, 30000], 0, arc);
-      addArc([30000, 8000],  7, arc2);
-      addArc([52000, 20000], 5, arc3);
-      addArc([40000, 22000], 3, arc4);
-      addArc([30000, 30000], 1, arc5);
-
-
-      /* setInterval(function() {
-        d3.selectAll(".ring").transition()
-                  .duration(1000)
-                  .call(arcTween, 280);
-      }, 1000); */
-
-      /* ADD IMAGE HERE
-      svg.append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-        .append("image")
-        .attr("xlink:href", "http://www.nuorisokirjailijat.fi/uploads/4/5/1/9/45198743/238000966.png")
-        .attr("width", "170px")
-        .attr("height", "170px")
-        .attr("x", -85)
-        .attr("y", -85);
-        .style("filter", "url(#drop-shadow)"); */
+      addArc([30000, 8000],  7, arc2, radius - 125, radius - 80);
+      addArc([52000, 20000], 5, arc3, radius - 105, radius - 60);
+      addArc([40000, 22000], 3, arc4, radius - 85, radius - 40);
+      addArc([30000, 30000], 1, arc5, radius - 65, radius - 20);
 
       //ADD TEXT
       var txt = svg.append("g")
