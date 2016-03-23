@@ -12,8 +12,11 @@
     .arc path {
       stroke: #fff;
     }
-    .middle-text {
-      font-size: 70px;
+    .centerTitle {
+      font-size: 30px;
+    }
+    .centerSubtitle {
+      font-size: 20px;
     }
     #tooltip {
         position: absolute;
@@ -102,19 +105,44 @@
 
       //Add ring to svg
       function addArc(data, colorCounter, arc) {
-        svg.append("g")
-          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-          .selectAll("path").data(pie(data))
+        var sum = 0;
+        for(var i = 0; i < data.length; i++) {
+          sum += data[i];
+        }
+        var endAngle = parseFloat((data[0]/sum * Math.PI * 2).toFixed(2));
+
+        console.log(endAngle);
+        var g = svg.append("g")
+          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var path = g.selectAll("path").data(pie([0, 0]))
           .enter()
           .append("path")
           .attr("class", colorCounter == 0 ? "": "ring")
           .attr("ringNum", ringCounter--)
           .attr("fill", function(d, i) { 
             return colorCounter == 0 ? "#314965" :colors[i + colorCounter]; })
-          .attr("d", arc)
+          .attr("d", arc.endAngle(colorCounter == 0 ? 2 * Math.PI : 0.0))
           .style("filter", "url(#drop-shadow)");
+        path = d3.select(path[0][0]);
+
+        if(path && colorCounter != 0) {
+          path.transition()
+              .duration(1000)
+              .call(arcTween, endAngle);
+        }
       };
 
+      //Animation tween function
+      function arcTween(transition, newAngle) {
+        transition.attrTween("d", function(d) {
+          var interpolate = d3.interpolate(d.endAngle, newAngle);
+          return function(t) {
+            d.endAngle = interpolate(t);
+            return arc(d);
+          };
+        });
+      }
 
       //Add listener to menu list
       d3.selectAll(".menu li")
@@ -168,6 +196,13 @@
       addArc([40000, 22000], 3, arc4);
       addArc([30000, 30000], 1, arc5);
 
+
+      /* setInterval(function() {
+        d3.selectAll(".ring").transition()
+                  .duration(1000)
+                  .call(arcTween, 280);
+      }, 1000); */
+
       /* ADD IMAGE HERE
       svg.append("g")
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
@@ -181,11 +216,22 @@
 
       //ADD TEXT
       var txt = svg.append("g")
+                .attr("id", "centerPiece")
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
                 .append("text");
       
-      txt.append("tspan").text("VURU Grade");
-      txt.append("tspan").text("95/100");
+      txt.append("tspan")
+        .attr("x", -86.65)
+        .attr("y", 0)
+        .attr("class", "centerTitle")
+        .style('fill', "white")
+        .text("VURU Grade");
+      txt.append("tspan")
+        .attr("x", -30.65)
+        .attr("y", 32)
+        .attr("class", "centerSubtitle")
+        .style('fill', "white")
+        .text("95/100");
 
             
     </script>
