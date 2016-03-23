@@ -12,11 +12,19 @@
     .arc path {
       stroke: #fff;
     }
-    .centerTitle {
+    #centerTitle {
       font-size: 30px;
+      text-anchor: middle;
+
     }
-    .centerSubtitle {
+    #centerSubtitle {
       font-size: 20px;
+      text-anchor: middle;
+    }
+    #centerData {
+      font-size: 30px;
+      opacity: 0;
+      text-anchor: middle;
     }
     #tooltip {
         position: absolute;
@@ -111,7 +119,6 @@
         }
         var endAngle = parseFloat((data[0]/sum * Math.PI * 2).toFixed(2));
 
-        console.log(endAngle);
         var g = svg.append("g")
           .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
@@ -120,6 +127,7 @@
           .append("path")
           .attr("class", colorCounter == 0 ? "": "ring")
           .attr("ringNum", ringCounter--)
+          .attr("ringData", data[0])
           .attr("fill", function(d, i) { 
             return colorCounter == 0 ? "#314965" :colors[i + colorCounter]; })
           .attr("d", arc.endAngle(colorCounter == 0 ? 2 * Math.PI : 0.0))
@@ -148,19 +156,41 @@
       d3.selectAll(".menu li")
         .data([0, 1, 2, 3])
         .on("mouseenter", function(d) {
+          var centerData = 0;
           d3.select(this)
             .style("background-color", borders[d]);
-            d3.selectAll(".ring")
-              .style("opacity", function() { 
-                  return (d3.select(this).attr("fill") != "transparent" && 
-                          d3.select(this).attr("ringNum") == d) ? 1.0 : 0;
-              });
-          })
+          d3.selectAll(".ring")
+            .style("opacity", function() { 
+                return (d3.select(this).attr("fill") != "transparent" && 
+                        d3.select(this).attr("ringNum") == d) ? 1.0 : 0;
+            });
+          d3.select("#centerTitle")
+            .style("opacity", 0);
+          d3.select("#centerSubtitle")
+            .style("opacity", 0);
+          
+          d3.selectAll(".ring").each(function() {
+            var ring = d3.select(this)[0][0];
+            ring = d3.select(ring);
+            if(ring.attr("fill") != "transparent" &&
+               ring.attr("ringNum") == d)
+              centerData = ring.attr("ringData");
+          });    
+          d3.select("#centerData")
+            .style("opacity", 1)
+            .text(centerData);
+        })
         .on("mouseleave", function() {
           d3.select(this)
             .style("background-color", "transparent");
           d3.selectAll(".ring")
             .style("opacity", 1.0);
+          d3.select("#centerTitle")
+            .style("opacity", 1.0);
+          d3.select("#centerSubtitle")
+            .style("opacity", 1.0);
+          d3.select("#centerData")
+            .style("opacity", 0);
         });
 
       //Create shadow
@@ -216,23 +246,25 @@
 
       //ADD TEXT
       var txt = svg.append("g")
-                .attr("id", "centerPiece")
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
                 .append("text");
       
       txt.append("tspan")
-        .attr("x", -86.65)
-        .attr("y", 0)
-        .attr("class", "centerTitle")
+        .attr("id", "centerTitle")
         .style('fill', "white")
         .text("VURU Grade");
       txt.append("tspan")
-        .attr("x", -30.65)
+        .attr("x", 0)
         .attr("y", 32)
-        .attr("class", "centerSubtitle")
+        .attr("id", "centerSubtitle")
         .style('fill', "white")
         .text("95/100");
-
+      txt.append("tspan")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("id", "centerData")
+        .style('fill', "white")
+        .text("30000");
             
     </script>
 </body>
