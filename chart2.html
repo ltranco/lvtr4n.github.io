@@ -2,6 +2,9 @@
   <title>Vuru Chart Demo</title>
   <meta charset="utf-8">
   <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
     .arc text {
       font: 10px sans-serif;
       text-anchor: middle;
@@ -11,7 +14,6 @@
     }
     .middle-text {
       font-size: 70px;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
     #tooltip {
         position: absolute;
@@ -28,8 +30,23 @@
     #tooltip.hidden {
         opacity: 0;
     }
+    .menu ul {
+      list-style: none;
+    }
+    .menu ul li {
+      padding: 5px;
+      width: 300px;
+    }
   </style>
   <body>
+    <div class="menu">
+      <ul>
+        <li>Management</li>
+        <li>Financial Strength</li>
+        <li>Economic Moat</li>
+        <li>Dividends and Buybacks</li>
+      </ul>
+    </div>
     <div id="tooltip" class="hidden">
       <span id="tooltip_val"></span>
     </div>
@@ -39,11 +56,12 @@
       var width = 500,
           height = 500,
           radius = Math.min(width, height) / 2,
-
+          ringCounter = 4,
           colors = ["black", "url(#gradient1)", "transparent", 
                     "url(#gradient2)", "transparent", 
                     "url(#gradient3)", "transparent", 
                     "url(#gradient4)", "transparent"],
+          borders = ["#8F69F1", "#F7C116", "#4BBAC3", "#F56E69"],
           pie = d3.layout.pie().sort(null),
           arc = d3.svg.arc().innerRadius(radius - 125).outerRadius(radius - 25),
           arc2 = d3.svg.arc().innerRadius(radius - 125).outerRadius(radius - 80),
@@ -90,35 +108,32 @@
           .enter()
           .append("path")
           .attr("class", colorCounter == 0 ? "": "ring")
+          .attr("ringNum", ringCounter--)
           .attr("fill", function(d, i) { 
             return colorCounter == 0 ? "#314965" :colors[i + colorCounter]; })
           .attr("d", arc)
-          .style("filter", "url(#drop-shadow)")
-          .on("mouseenter", function(d) {
-            var ringUnderMouse = this;
-            if(colorCounter != 0 && 
-              d3.select(this).attr("fill") != "transparent") {
-              d3.select("#tooltip")
-                .style("left", d3.event.pageX + "px")
-                .style("top", d3.event.pageY + "px")
-                .style("opacity", 1)
-                .select("#tooltip_val")
-                .text(d.value);
-              d3.selectAll(".ring")
-                .style("opacity", function() { 
-                  return (this == ringUnderMouse) ? 1.0 : 0;
-                })
-                .style("cursor", "pointer");  
-            }  
-          })
-          .on("mouseleave", function() {
-            d3.select("#tooltip")
-              .style("opacity", 0);
-            d3.selectAll("path")
-              .style("opacity", 1)
-              .style("cursor", "default");
-          });
+          .style("filter", "url(#drop-shadow)");
       };
+
+
+      //Add listener to menu list
+      d3.selectAll(".menu li")
+        .data([0, 1, 2, 3])
+        .on("mouseenter", function(d) {
+          d3.select(this)
+            .style("background-color", borders[d]);
+            d3.selectAll(".ring")
+              .style("opacity", function() { 
+                  return (d3.select(this).attr("fill") != "transparent" && 
+                          d3.select(this).attr("ringNum") == d) ? 1.0 : 0;
+              });
+          })
+        .on("mouseleave", function() {
+          d3.select(this)
+            .style("background-color", "transparent");
+          d3.selectAll(".ring")
+            .style("opacity", 1.0);
+        });
 
       //Create shadow
       var defs = svg.append("defs");
@@ -153,7 +168,7 @@
       addArc([40000, 22000], 3, arc4);
       addArc([30000, 30000], 1, arc5);
 
-      
+      /* ADD IMAGE HERE
       svg.append("g")
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
         .append("image")
@@ -162,7 +177,15 @@
         .attr("height", "170px")
         .attr("x", -85)
         .attr("y", -85);
-        //.style("filter", "url(#drop-shadow)");
+        .style("filter", "url(#drop-shadow)"); */
+
+      //ADD TEXT
+      var txt = svg.append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+                .append("text");
+      
+      txt.append("tspan").text("VURU Grade");
+      txt.append("tspan").text("95/100");
 
             
     </script>
