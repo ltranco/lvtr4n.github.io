@@ -14,12 +14,12 @@
       stroke: #fff;
     }
     #centerTitle {
-      font-size: 20px;
+      font-size: 25px;
       text-anchor: middle;
 
     }
     #centerSubtitle {
-      font-size: 35px;
+      font-size: 90px;
       text-anchor: middle;
     }
     #centerData {
@@ -255,11 +255,12 @@
       
       txt.append("tspan")
         .attr("id", "centerTitle")
+        .attr("y", -20)
         .style('fill', "white")
         .text("VURU Grade");
       txt.append("tspan")
         .attr("x", 0)
-        .attr("y", 32)
+        .attr("y", 62)
         .attr("id", "centerSubtitle")
         .style('fill', "white")
         .text("92.5");
