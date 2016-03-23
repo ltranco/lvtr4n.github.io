@@ -14,12 +14,12 @@
       stroke: #fff;
     }
     #centerTitle {
-      font-size: 30px;
+      font-size: 20px;
       text-anchor: middle;
 
     }
     #centerSubtitle {
-      font-size: 20px;
+      font-size: 30px;
       text-anchor: middle;
     }
     #centerData {
@@ -56,7 +56,7 @@
       font-family: "Lato";
     }
     .menu img {
-      width: 300px;
+      width: 350px;
     }
   </style>
   <body>
@@ -243,10 +243,10 @@
       
       addArc([0, 30000], 0, arc6, 0, 0);
       //addArc([30000, 30000], 0, arc);
-      addArc([30000, 8000],  7, arc2, radius - 125, radius - 80);
-      addArc([52000, 20000], 5, arc3, radius - 105, radius - 60);
-      addArc([40000, 22000], 3, arc4, radius - 85, radius - 40);
-      addArc([30000, 30000], 1, arc5, radius - 65, radius - 20);
+      addArc([2.5, 10],  7, arc2, radius - 125, radius - 80);
+      addArc([10, 10], 5, arc3, radius - 105, radius - 60);
+      addArc([6, 10], 3, arc4, radius - 85, radius - 40);
+      addArc([10, 10], 1, arc5, radius - 65, radius - 20);
 
       //ADD TEXT
       var txt = svg.append("g")
@@ -262,7 +262,7 @@
         .attr("y", 32)
         .attr("id", "centerSubtitle")
         .style('fill', "white")
-        .text("95/100");
+        .text("92.5");
       txt.append("tspan")
         .attr("x", 0)
         .attr("y", 0)
