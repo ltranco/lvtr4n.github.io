@@ -41,7 +41,7 @@ a:hover {
 
 h1 {
     font-family: "AvenirLT-Roman", Helvetica;
-    font-weight: 500;
+    font-weight: 200;
     line-height: 1.2em;
     color: #131314;
     font-size: 32px;
@@ -53,14 +53,14 @@ h2 {
     line-height: 16px;
     margin-bottom: 15px;
     color: #131314;
-
+    font-weight: 200;
 }
 
 h3 {
     font-family: "AvenirLT-Heavy", Helvetica;
     font-size: 13px;
     color: #131314;
-
+    font-weight: 200;
 }
 
 h4 {
@@ -234,6 +234,24 @@ section {
     font-size: 16px;
     font-weight: 500;
     display: inline-block;
+}
+.owl-prev, .owl-next {
+    background-color: black;
+    font-family: "AvenirLT-Roman", Helvetica;
+    border-radius: .3em;
+    padding: 5px 5px 5px 5px;
+    display: inline-block;
+    font-weight: 200;
+    font-size: 12px;
+    color: white;
+    margin: 10px 5px 0 5px;
+}
+.owl-prev:hover, .owl-next:hover {
+    background-color: #ff3232;
+    opacity: 0.9;
+}
+.owl-buttons {
+    text-align: center;
 }
 .moreBadge, .techBadge {
     display: inline-block;
