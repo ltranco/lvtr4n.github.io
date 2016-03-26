@@ -317,7 +317,10 @@ section {
     padding: 3px;
 }
 .project-list li {
-    margin-bottom: 30px;
+    margin: 10px 0 30px 10px;
+    max-width: 300px;
+    display: inline-block;
+    vertical-align: top;
 }
 .footer {
     text-align: center;
