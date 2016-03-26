@@ -67,6 +67,10 @@ $(document).ready(function() { 
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $("#kickass").hide();
     }
+    if(!(/(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent))) {
+        console.log("here");
+        $("head").append("<link href='https://fonts.googleapis.com/css?family=Muli:300' rel='stylesheet' type='text/css'>");
+    }
 
     $(".freelance-proj-email-button").click(function() {
         emailSampleHandler();
