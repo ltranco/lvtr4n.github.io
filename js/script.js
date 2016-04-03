@@ -33,14 +33,16 @@ function emailSampleHandler() {
 
 $(document).ready(function() { 
     var dur = 300;
-    setInterval(function() {
-        $(".down-here").effect("bounce", 1000)
-    }, 3000);
     $(".down-here").click(function() {
         $("html,body").animate({
           scrollTop: $(".concept-statement").offset().top + 100
         }, dur);
+        $(".down-here").hide();
     });
+    setInterval(function() {
+        $(".down-here").fadeTo("fast", 0.3);
+        $(".down-here").fadeTo("fast", 1);
+    }, 1000);
     
     $("h1").animate({color:"#ffffff"}, dur);
     $("h3").animate({color:"#ffffff"}, dur);
@@ -51,12 +53,14 @@ $(document).ready(function() { 
             $("body").animate({ backgroundColor: "#131314" }, {duration:dur, queue:false});
             $("h3").animate({color:"#ffffff"}, {duration:dur, queue:false});
             $("header").animate({backgroundColor:"#131314"}, {duration:dur, queue:false});
+            $(".down-here").show();
         }
         else if (direction == "down") {
             $("h1").animate({color:"#131314"}, {duration:dur, queue:false});
             $("body").animate({ backgroundColor: "#ffffff" }, {duration:dur, queue:false});
             $("h3").animate({color:"#131314"}, {duration:dur, queue:false});
             $("header").animate({backgroundColor:"#ffffff"}, {duration:dur, queue:false});
+            $(".down-here").hide();
         }
     },
     {
