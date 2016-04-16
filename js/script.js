@@ -39,6 +39,7 @@ $(document).ready(function() { 
         }, dur);
         $(".down-here").hide();
     });
+    $(".work-time").animate({backgroundColor: "black"}, 10);
     setInterval(function() {
         $(".down-here").fadeTo("fast", 0.3);
         $(".down-here").fadeTo("fast", 1);
@@ -53,6 +54,7 @@ $(document).ready(function() { 
             $("body").animate({ backgroundColor: "#131314" }, {duration:dur, queue:false});
             $("h3").animate({color:"#ffffff"}, {duration:dur, queue:false});
             $("header").animate({backgroundColor:"#131314"}, {duration:dur, queue:false});
+            $(".work-time").animate({backgroundColor:"black"}, {duration:dur, queue:false});
             $(".down-here").show();
         }
         else if (direction == "down") {
@@ -60,6 +62,7 @@ $(document).ready(function() { 
             $("body").animate({ backgroundColor: "#ffffff" }, {duration:dur, queue:false});
             $("h3").animate({color:"#131314"}, {duration:dur, queue:false});
             $("header").animate({backgroundColor:"#ffffff"}, {duration:dur, queue:false});
+            $(".work-time").animate({backgroundColor:"#f0f0f0"}, {duration:dur, queue:false});
             $(".down-here").hide();
         }
     },
