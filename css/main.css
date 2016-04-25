@@ -169,6 +169,7 @@ h3 {
     margin-top: 100px;
     margin-bottom: 50px;
     color: white;
+    display: none;
 }
 .concept-statement span {
     font-size: 20px;
@@ -200,10 +201,12 @@ h3 {
     opacity: 0.8;
 }
 
-.socials li {
-    display: inline-block;
+.socials {
+    margin: 5px 0 0 -5px;
+    display: none;
 }
 .socials li {
+    display: inline-block;
     font-size: 15px;
 }
 

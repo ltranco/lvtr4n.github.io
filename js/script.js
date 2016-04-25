@@ -32,7 +32,7 @@ function emailSampleHandler() {
 }
 
 $(document).ready(function() { 
-    var dur = 300;
+    var dur = 625;
     $(".down-here").click(function() {
         $("html,body").animate({
           scrollTop: $(".concept-statement").offset().top + 100
@@ -45,8 +45,15 @@ $(document).ready(function() { 
         $(".down-here").fadeTo("fast", 1);
     }, 1000);
     
-    $("h1").animate({color:"#ffffff"}, dur);
-    $("h3").animate({color:"#ffffff"}, dur);
+    $("h1").animate({color:"#ffffff"}, dur, function() {
+        $("h3").animate({color:"#ffffff"}, dur, function() {
+            $(".socials").fadeIn(dur, function() {
+                $(".concept-statement h4").fadeIn(dur);
+            });    
+        });    
+    });
+    
+    
     $("header").animate({backgroundColor:"#131314"}, 0);
     $('.concept-statement').waypoint(function(direction) {
         if (direction == "up") {
