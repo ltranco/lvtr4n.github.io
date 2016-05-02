@@ -330,6 +330,7 @@ section {
     font-size: 11px;
     margin-left: 1px;
     background-color: #f0f0f0;
+    display: none;
     border-radius: 7px;
     font-weight: 200;
     padding: 3px;
